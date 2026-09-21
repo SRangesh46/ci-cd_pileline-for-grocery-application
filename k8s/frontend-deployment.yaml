@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/freshcart-frontend:IMAGE_TAG
+          image: ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/grocery-frontend-repository:IMAGE_TAG
           ports:
             - containerPort: 80
           readinessProbe:

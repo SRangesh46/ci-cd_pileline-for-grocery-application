@@ -15,12 +15,12 @@ spec:
     spec:
       containers:
         - name: backend
-          image: ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/freshcart-backend:IMAGE_TAG
+          image: ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/grocery-backend-repository:IMAGE_TAG
           ports:
             - containerPort: 8080
           env:
             - name: DB_HOST
-              value: "YOUR_RDS_ENDPOINT"
+              value: "172.31.90.255"
             - name: DB_PORT
               value: "3306"
             - name: DB_NAME

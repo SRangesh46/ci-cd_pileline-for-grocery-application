@@ -3,10 +3,10 @@ pipeline {
 
     environment {
         AWS_REGION = 'us-east-1'
-        AWS_ACCOUNT_ID = 'YOUR_ACCOUNT_ID'
-        BACKEND_REPO = 'freshcart-backend'
-        FRONTEND_REPO = 'freshcart-frontend'
-        EKS_CLUSTER = 'YOUR_EKS_CLUSTER_NAME'
+        AWS_ACCOUNT_ID = '786830914319'
+        BACKEND_REPO = 'grocery-backend-repository'
+        FRONTEND_REPO = 'grocery-frontend-repository'
+        EKS_CLUSTER = 'Rangesh-freshcart-cluster'
         NAMESPACE = 'freshcart'
     }
 
