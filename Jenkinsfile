@@ -69,7 +69,11 @@ pipeline {
 
                       kubectl apply -f k8s/namespace.yaml
 
-                      sed "s#DB_USER_PLACEHOLDER#${DB_USER}#g; s#DB_PASSWORD_PLACEHOLDER#${DB_PASSWORD}#g" k8s/db-secret.yaml | kubectl apply -f -
+                      kubectl create secret generic db-secret \
+                        -n ${NAMESPACE} \
+                        --from-literal=DB_USER="${DB_USER}" \
+                        --from-literal=DB_PASSWORD="${DB_PASSWORD}" \
+                        --dry-run=client -o yaml | kubectl apply -f -
 
                       sed "s#IMAGE_TAG#${BUILD_NUMBER}#g; s#ACCOUNT_ID#${AWS_ACCOUNT_ID}#g" k8s/backend-deployment.yaml | kubectl apply -f -
                       sed "s#IMAGE_TAG#${BUILD_NUMBER}#g; s#ACCOUNT_ID#${AWS_ACCOUNT_ID}#g" k8s/frontend-deployment.yaml | kubectl apply -f -
