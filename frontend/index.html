@@ -1,103 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FreshCart | Online Grocery Store</title>
-<link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FreshCart | Online Grocery Store</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
-<!-- ===================== HEADER ===================== -->
-<header class="navbar">
-    <div class="nav-container">
-        <div class="logo">🛒 FreshCart</div>
+    <!-- ===================== HEADER ===================== -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo">🛒 FreshCart</div>
 
-        <div class="search-box">
-            <input type="text" id="searchInput" placeholder="Search for groceries...">
-            <button id="searchBtn">Search</button>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search for groceries...">
+                <button id="searchBtn">Search</button>
+            </div>
+
+            <div class="nav-actions">
+                <span id="userGreeting" class="hidden"></span>
+                <button id="loginBtn" class="btn-link">Login</button>
+                <button id="logoutBtn" class="btn-link hidden">Logout</button>
+                <button id="ordersBtn" class="btn-link hidden">My Oorders</button>
+                <button id="cartBtn" class="btn-cart">
+                    🛍️ Cart <span id="cartCount">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===================== CATEGORY BAR ===================== -->
+    <nav class="category-bar" id="categoryBar">
+        <button class="cat-btn active" data-category="">All</button>
+    </nav>
+
+    <!-- ===================== MAIN CONTENT ===================== -->
+    <main class="container">
+        <div id="statusMsg" class="status-msg hidden"></div>
+        <h2 class="section-title">Fresh Products For You</h2>
+        <div id="productGrid" class="product-grid"></div>
+    </main>
+
+    <!-- ===================== CART SIDEBAR ===================== -->
+    <div id="cartOverlay" class="overlay hidden"></div>
+    <aside id="cartSidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h3>Your Cart</h3>
+            <button id="closeCart" class="close-btn">&times;</button>
+        </div>
+        <div id="cartItems" class="cart-items"></div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotal">₹0.00</span>
+            </div>
+            <button id="checkoutBtn" class="btn-primary full-width">Checkout</button>
+        </div>
+    </aside>
+
+    <!-- ===================== AUTH MODAL ===================== -->
+    <div id="authOverlay" class="overlay hidden"></div>
+    <div id="authModal" class="modal hidden">
+        <button id="closeAuth" class="close-btn">&times;</button>
+
+        <div id="loginForm">
+            <h3>Login</h3>
+            <input type="email" id="loginEmail" placeholder="Email" required>
+            <input type="password" id="loginPassword" placeholder="Password" required>
+            <button class="btn-primary full-width" id="submitLogin">Login</button>
+            <p class="switch-text">No account? <a href="#" id="showRegister">Register here</a></p>
+            <p id="loginError" class="error-text"></p>
         </div>
 
-        <div class="nav-actions">
-            <span id="userGreeting" class="hidden"></span>
-            <button id="loginBtn" class="btn-link">Login</button>
-            <button id="logoutBtn" class="btn-link hidden">Logout</button>
-            <button id="ordersBtn" class="btn-link hidden">My Orders</button>
-            <button id="cartBtn" class="btn-cart">
-                🛍️ Cart <span id="cartCount">0</span>
-            </button>
+        <div id="registerForm" class="hidden">
+            <h3>Create Account</h3>
+            <input type="text" id="regName" placeholder="Full Name" required>
+            <input type="email" id="regEmail" placeholder="Email" required>
+            <input type="password" id="regPassword" placeholder="Password (min 6 chars)" required>
+            <button class="btn-primary full-width" id="submitRegister">Register</button>
+            <p class="switch-text">Already have an account? <a href="#" id="showLogin">Login here</a></p>
+            <p id="registerError" class="error-text"></p>
         </div>
     </div>
-</header>
 
-<!-- ===================== CATEGORY BAR ===================== -->
-<nav class="category-bar" id="categoryBar">
-    <button class="cat-btn active" data-category="">All</button>
-</nav>
-
-<!-- ===================== MAIN CONTENT ===================== -->
-<main class="container">
-    <div id="statusMsg" class="status-msg hidden"></div>
-    <h2 class="section-title">Fresh Products For You</h2>
-    <div id="productGrid" class="product-grid"></div>
-</main>
-
-<!-- ===================== CART SIDEBAR ===================== -->
-<div id="cartOverlay" class="overlay hidden"></div>
-<aside id="cartSidebar" class="cart-sidebar">
-    <div class="cart-header">
-        <h3>Your Cart</h3>
-        <button id="closeCart" class="close-btn">&times;</button>
-    </div>
-    <div id="cartItems" class="cart-items"></div>
-    <div class="cart-footer">
-        <div class="cart-total">
-            <span>Total:</span>
-            <span id="cartTotal">₹0.00</span>
-        </div>
-        <button id="checkoutBtn" class="btn-primary full-width">Checkout</button>
-    </div>
-</aside>
-
-<!-- ===================== AUTH MODAL ===================== -->
-<div id="authOverlay" class="overlay hidden"></div>
-<div id="authModal" class="modal hidden">
-    <button id="closeAuth" class="close-btn">&times;</button>
-
-    <div id="loginForm">
-        <h3>Login</h3>
-        <input type="email" id="loginEmail" placeholder="Email" required>
-        <input type="password" id="loginPassword" placeholder="Password" required>
-        <button class="btn-primary full-width" id="submitLogin">Login</button>
-        <p class="switch-text">No account? <a href="#" id="showRegister">Register here</a></p>
-        <p id="loginError" class="error-text"></p>
+    <!-- ===================== ORDERS MODAL ===================== -->
+    <div id="ordersOverlay" class="overlay hidden"></div>
+    <div id="ordersModal" class="modal orders-modal hidden">
+        <button id="closeOrders" class="close-btn">&times;</button>
+        <h3>My Orders</h3>
+        <div id="ordersList" class="orders-list"></div>
     </div>
 
-    <div id="registerForm" class="hidden">
-        <h3>Create Account</h3>
-        <input type="text" id="regName" placeholder="Full Name" required>
-        <input type="email" id="regEmail" placeholder="Email" required>
-        <input type="password" id="regPassword" placeholder="Password (min 6 chars)" required>
-        <button class="btn-primary full-width" id="submitRegister">Register</button>
-        <p class="switch-text">Already have an account? <a href="#" id="showLogin">Login here</a></p>
-        <p id="registerError" class="error-text"></p>
-    </div>
-</div>
+    <footer class="footer">
+        <p>FreshCart Grocery Demo &mdash; 3-Tier Architecture Sample Project</p>
+    </footer>
 
-<!-- ===================== ORDERS MODAL ===================== -->
-<div id="ordersOverlay" class="overlay hidden"></div>
-<div id="ordersModal" class="modal orders-modal hidden">
-    <button id="closeOrders" class="close-btn">&times;</button>
-    <h3>My Orders</h3>
-    <div id="ordersList" class="orders-list"></div>
-</div>
-
-<footer class="footer">
-    <p>FreshCart Grocery Demo &mdash; 3-Tier Architecture Sample Project</p>
-</footer>
-
-<script src="js/config.js"></script>
-<script src="js/api.js"></script>
-<script src="js/app.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
 </body>
+
 </html>
