@@ -8,6 +8,7 @@ pipeline {
         FRONTEND_REPO = 'grocery-frontend-repository'
         EKS_CLUSTER = 'Rangesh-freshcart-cluster'
         NAMESPACE = 'freshcart'
+        DB_CREDENTIALS_ID = 'freshcart-db-credentials'
     }
 
     options {
@@ -62,19 +63,22 @@ pipeline {
 
         stage('Deploy to EKS') {
             steps {
-                sh '''
-                  aws eks update-kubeconfig --region ${AWS_REGION} --name ${EKS_CLUSTER}
+                withCredentials([usernamePassword(credentialsId: "${DB_CREDENTIALS_ID}", usernameVariable: 'DB_USER', passwordVariable: 'DB_PASSWORD')]) {
+                    sh '''
+                      aws eks update-kubeconfig --region ${AWS_REGION} --name ${EKS_CLUSTER}
 
-                  kubectl apply -f k8s/namespace.yaml
-                  kubectl apply -f k8s/db-secret.yaml
+                      kubectl apply -f k8s/namespace.yaml
 
-                  sed "s#IMAGE_TAG#${BUILD_NUMBER}#g; s#ACCOUNT_ID#${AWS_ACCOUNT_ID}#g" k8s/backend-deployment.yaml | kubectl apply -f -
-                  sed "s#IMAGE_TAG#${BUILD_NUMBER}#g; s#ACCOUNT_ID#${AWS_ACCOUNT_ID}#g" k8s/frontend-deployment.yaml | kubectl apply -f -
+                      sed "s#DB_USER_PLACEHOLDER#${DB_USER}#g; s#DB_PASSWORD_PLACEHOLDER#${DB_PASSWORD}#g" k8s/db-secret.yaml | kubectl apply -f -
 
-                  kubectl apply -f k8s/ingress.yaml
-                  kubectl rollout status deployment/backend -n ${NAMESPACE} --timeout=180s
-                  kubectl rollout status deployment/frontend -n ${NAMESPACE} --timeout=180s
-                '''
+                      sed "s#IMAGE_TAG#${BUILD_NUMBER}#g; s#ACCOUNT_ID#${AWS_ACCOUNT_ID}#g" k8s/backend-deployment.yaml | kubectl apply -f -
+                      sed "s#IMAGE_TAG#${BUILD_NUMBER}#g; s#ACCOUNT_ID#${AWS_ACCOUNT_ID}#g" k8s/frontend-deployment.yaml | kubectl apply -f -
+
+                      kubectl apply -f k8s/ingress.yaml
+                      kubectl rollout status deployment/backend -n ${NAMESPACE} --timeout=180s
+                      kubectl rollout status deployment/frontend -n ${NAMESPACE} --timeout=180s
+                    '''
+                }
             }
         }
 

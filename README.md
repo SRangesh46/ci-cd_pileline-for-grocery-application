@@ -218,9 +218,16 @@ Prefer an IAM role on the Jenkins EC2 instance rather than long-lived AWS access
 
 Create Jenkins pipeline from this repository and use the included `Jenkinsfile`.
 
-Update:
+Add Jenkins Credential:
+- Kind: **Username with password**
+- ID: `db-credentials` (matches `DB_CREDENTIALS_ID` in `Jenkinsfile`)
+- Username: `<Your DB Username>`
+- Password: `<Your DB Password>`
+
+Update `Jenkinsfile`:
 - `AWS_ACCOUNT_ID`
 - `EKS_CLUSTER`
+- `DB_CREDENTIALS_ID` (if different from default `db-credentials`)
 
 The pipeline:
 1. Checks out GitHub
@@ -228,9 +235,10 @@ The pipeline:
 3. Builds frontend/backend Docker images
 4. Logs in to ECR
 5. Pushes both images with BUILD_NUMBER
-6. Updates EKS deployments
-7. Waits for rollout
-8. Prints pods/services/Ingress
+6. Fetches database credentials securely from Jenkins Credentials Manager and updates the EKS `db-secret`
+7. Updates EKS deployments
+8. Waits for rollout
+9. Prints pods/services/Ingress
 
 ## Important production improvements
 
